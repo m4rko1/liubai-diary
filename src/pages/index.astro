@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { ArrowDownRight } from '@lucide/astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../paths';
 import { formatDate, SITE } from '../site';
 
 const posts = (await getCollection('posts', ({ data }) => !data.draft))
@@ -26,7 +27,7 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
     <div class="home-slides">
       {posts.map((post, index) => (
         <article class="story-slide" data-index={index} id={`story-${index + 1}`}>
-          <img src={post.data.image} alt={post.data.imageAlt} fetchpriority={index === 0 ? 'high' : 'auto'} />
+          <img src={withBase(post.data.image)} alt={post.data.imageAlt} fetchpriority={index === 0 ? 'high' : 'auto'} />
           <span class="story-shade" aria-hidden="true"></span>
           <div class="story-topline">
             <span>{SITE.title}</span>
@@ -36,7 +37,7 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
             <p>{formatDate(post.data.published)} / No. {String(index + 1).padStart(2, '0')}</p>
             <h1>{post.data.title}</h1>
             <p class="story-description">{post.data.description}</p>
-            <a href={`/posts/${post.id}/`}>阅读全文 <ArrowDownRight size={20} /></a>
+            <a href={withBase(`/posts/${post.id}/`)}>阅读全文 <ArrowDownRight size={20} /></a>
           </div>
         </article>
       ))}
@@ -46,7 +47,7 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
   <section class="home-closing">
     <p>Journal / Notes / Observations</p>
     <h2>持续观察。<br />保持未完成。</h2>
-    <a href="/posts/">进入全部文章 <ArrowDownRight size={20} /></a>
+    <a href={withBase('/posts/')}>进入全部文章 <ArrowDownRight size={20} /></a>
   </section>
 </BaseLayout>
 

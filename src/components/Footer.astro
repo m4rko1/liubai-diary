@@ -1,5 +1,6 @@
 ---
 import { ArrowUpRight } from '@lucide/astro';
+import { withBase } from '../paths';
 import { SITE } from '../site';
 ---
 
@@ -12,7 +13,7 @@ import { SITE } from '../site';
   <div class="footer-meta">
     <div>
       <a href={`mailto:${SITE.email}`}>邮件 <ArrowUpRight size={14} /></a>
-      <a href="/rss.xml">RSS <ArrowUpRight size={14} /></a>
+      <a href={withBase('/rss.xml')}>RSS <ArrowUpRight size={14} /></a>
     </div>
     <p>© {new Date().getFullYear()} {SITE.author}<br />CC BY-NC 4.0</p>
   </div>

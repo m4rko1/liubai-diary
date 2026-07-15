@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { ArrowUpRight } from '@lucide/astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../paths';
 
 const posts = await getCollection('posts', ({ data }) => !data.draft);
 const counts = posts.reduce((map, post) => {
@@ -19,7 +20,7 @@ const tags = [...counts.entries()].sort((a, b) => b[1] - a[1]);
   </header>
   <section class="tag-index shell" aria-label="标签列表">
     {tags.map(([tag, count], index) => (
-      <a href={`/tags/${encodeURIComponent(tag)}/`}>
+      <a href={withBase(`/tags/${encodeURIComponent(tag)}/`)}>
         <span class="tag-number">{String(index + 1).padStart(2, '0')}</span>
         <strong>{tag}</strong>
         <span>{count} 篇文章</span>

@@ -1,5 +1,6 @@
 ---
 import { Menu, Moon, Rss, Sun, X } from '@lucide/astro';
+import { withBase } from '../paths';
 import { SITE } from '../site';
 
 const pathname = Astro.url.pathname;
@@ -13,7 +14,7 @@ const nav = [
 ---
 
 <header class:list={['site-header', { 'is-home': isHome }]}>
-  <a class="wordmark" href="/" aria-label={`${SITE.title}首页`}>
+  <a class="wordmark" href={withBase('/')} aria-label={`${SITE.title}首页`}>
     <span class="wordmark-mark" aria-hidden="true">LB</span>
     <span class="wordmark-name">{SITE.title}</span>
   </a>
@@ -31,7 +32,7 @@ const nav = [
   </div>
   <nav aria-label="主导航">
     {nav.map((item, index) => (
-      <a href={item.href} aria-current={pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)) ? 'page' : undefined}>
+      <a href={withBase(item.href)} aria-current={pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)) ? 'page' : undefined}>
         <span>{String(index + 1).padStart(2, '0')}</span>
         <strong>{item.label}</strong>
         <small>{item.en}</small>
@@ -39,7 +40,7 @@ const nav = [
     ))}
   </nav>
   <div class="menu-footer">
-    <a href="/rss.xml"><Rss size={16} /> RSS</a>
+    <a href={withBase('/rss.xml')}><Rss size={16} /> RSS</a>
     <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
     <button class="theme-toggle" type="button" aria-label="切换深浅主题" title="切换深浅主题">
       <Sun class="sun-icon" size={18} stroke-width={1.5} />

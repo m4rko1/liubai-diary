@@ -1,6 +1,7 @@
 ---
 import { ArrowUpRight } from '@lucide/astro';
 import type { CollectionEntry } from 'astro:content';
+import { withBase } from '../paths';
 import { formatDate } from '../site';
 
 interface Props {
@@ -12,8 +13,8 @@ const { post, index = 0 } = Astro.props;
 ---
 
 <article class="article-card">
-  <a class="article-image-link" href={`/posts/${post.id}/`} aria-label={`阅读：${post.data.title}`}>
-    <img src={post.data.image} alt={post.data.imageAlt} loading="lazy" />
+  <a class="article-image-link" href={withBase(`/posts/${post.id}/`)} aria-label={`阅读：${post.data.title}`}>
+    <img src={withBase(post.data.image)} alt={post.data.imageAlt} loading="lazy" />
     <span class="article-image-index">{String(index + 1).padStart(2, '0')}</span>
   </a>
   <div class="article-card-body">
@@ -21,9 +22,9 @@ const { post, index = 0 } = Astro.props;
       <time datetime={post.data.published.toISOString()}>{formatDate(post.data.published)}</time>
       <span>{post.data.tags.join(' / ')}</span>
     </div>
-    <h2><a href={`/posts/${post.id}/`}>{post.data.title}</a></h2>
+    <h2><a href={withBase(`/posts/${post.id}/`)}>{post.data.title}</a></h2>
     <p>{post.data.description}</p>
-    <a class="read-link" href={`/posts/${post.id}/`} aria-label={`阅读全文：${post.data.title}`}>
+    <a class="read-link" href={withBase(`/posts/${post.id}/`)} aria-label={`阅读全文：${post.data.title}`}>
       <span>Read</span><ArrowUpRight size={16} />
     </a>
   </div>

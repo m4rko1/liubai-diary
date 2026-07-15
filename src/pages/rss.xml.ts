@@ -1,6 +1,7 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
+import { withBase } from '../paths';
 import { SITE } from '../site';
 
 export async function GET(context: APIContext) {
@@ -9,12 +10,12 @@ export async function GET(context: APIContext) {
   return rss({
     title: SITE.title,
     description: SITE.description,
-    site: context.site ?? 'http://localhost:4321',
+    site: new URL(withBase('/'), context.site ?? 'http://localhost:4321').toString(),
     items: posts.map((post) => ({
       title: post.data.title,
       description: post.data.description,
       pubDate: post.data.published,
-      link: `/posts/${post.id}/`,
+      link: withBase(`/posts/${post.id}/`),
       categories: post.data.tags,
     })),
   });

@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import { ArrowLeft, ArrowUpRight } from '@lucide/astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../paths';
 import { formatDate } from '../../site';
 
 export async function getStaticPaths() {
@@ -20,7 +21,7 @@ const nextPost = allPosts[currentIndex + 1] ?? allPosts[0];
 <BaseLayout title={post.data.title} description={post.data.description} image={post.data.image} article>
   <article class="post-page">
     <header class="post-header shell">
-      <a class="back-link" href="/posts/"><ArrowLeft size={16} /> 全部文章</a>
+      <a class="back-link" href={withBase('/posts/')}><ArrowLeft size={16} /> 全部文章</a>
       <div class="post-heading-grid">
         <div class="post-meta-rail">
           <time datetime={post.data.published.toISOString()}>{formatDate(post.data.published)}</time>
@@ -28,13 +29,13 @@ const nextPost = allPosts[currentIndex + 1] ?? allPosts[0];
         </div>
         <div>
           <div class="post-tags">
-            {post.data.tags.map((tag) => <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>)}
+            {post.data.tags.map((tag) => <a href={withBase(`/tags/${encodeURIComponent(tag)}/`)}>{tag}</a>)}
           </div>
           <h1>{post.data.title}</h1>
           <p class="post-deck">{post.data.description}</p>
         </div>
       </div>
-      <img class="post-hero" src={post.data.image} alt={post.data.imageAlt} />
+      <img class="post-hero" src={withBase(post.data.image)} alt={post.data.imageAlt} />
     </header>
 
     <div class="post-body shell">
@@ -49,7 +50,7 @@ const nextPost = allPosts[currentIndex + 1] ?? allPosts[0];
 
     <footer class="post-end shell">
       <p class="eyebrow">Continue reading</p>
-      <a href={`/posts/${nextPost.id}/`}>
+      <a href={withBase(`/posts/${nextPost.id}/`)}>
         <span>下一篇</span>
         <strong>{nextPost.data.title}</strong>
         <ArrowUpRight size={24} />
