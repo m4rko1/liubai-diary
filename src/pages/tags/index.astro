@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import { ArrowUpRight } from '@lucide/astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = await getCollection('posts', ({ data }) => !data.draft);
+const counts = posts.reduce((map, post) => {
+  post.data.tags.forEach((tag) => map.set(tag, (map.get(tag) ?? 0) + 1));
+  return map;
+}, new Map<string, number>());
+const tags = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="标签" description="按主题浏览留白日记。">
+  <header class="page-header shell">
+    <p class="eyebrow">Index / {tags.length}</p>
+    <h1>主题索引</h1>
+    <p>从一个关键词开始，沿着相关的思考继续阅读。</p>
+  </header>
+  <section class="tag-index shell" aria-label="标签列表">
+    {tags.map(([tag, count], index) => (
+      <a href={`/tags/${encodeURIComponent(tag)}/`}>
+        <span class="tag-number">{String(index + 1).padStart(2, '0')}</span>
+        <strong>{tag}</strong>
+        <span>{count} 篇文章</span>
+        <ArrowUpRight size={20} />
+      </a>
+    ))}
+  </section>
+</BaseLayout>

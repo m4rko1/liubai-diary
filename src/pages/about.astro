@@ -1,0 +1,28 @@
+---
+import { ArrowUpRight, MapPin } from '@lucide/astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site';
+---
+
+<BaseLayout title="关于" description={`关于${SITE.author}和${SITE.title}。`}>
+  <section class="about-page shell">
+    <div class="about-index">
+      <p class="eyebrow">About / Colophon</p>
+      <span><MapPin size={15} /> {SITE.location}</span>
+    </div>
+    <div class="about-main">
+      <h1>你好，我是<br />{SITE.author}。</h1>
+      <div class="about-copy">
+        <p class="about-lead">我关注技术如何改变人的工作方式，也记录城市、阅读和那些暂时没有答案的问题。</p>
+        <p>“留白日记”是我的公开笔记本。这里没有固定更新频率，只留下经过思考、值得长期保存的内容。所有文章都用 Markdown 写作，因此它们不会被困在某个平台里。</p>
+        <p>如果一篇文章让你想到什么，欢迎写信。认真而具体的来信，我都会阅读。</p>
+        <a class="contact-link" href={`mailto:${SITE.email}`}>{SITE.email} <ArrowUpRight size={18} /></a>
+      </div>
+    </div>
+    <div class="about-facts">
+      <div><span>正在关注</span><strong>独立创作 / 数字工具 / 城市观察</strong></div>
+      <div><span>博客构成</span><strong>Astro / Markdown / 好奇心</strong></div>
+      <div><span>最近更新</span><strong>2026 · Shanghai</strong></div>
+    </div>
+  </section>
+</BaseLayout>

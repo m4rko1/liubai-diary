@@ -1,0 +1,73 @@
+---
+import { Menu, Moon, Rss, Sun, X } from '@lucide/astro';
+import { SITE } from '../site';
+
+const pathname = Astro.url.pathname;
+const isHome = pathname === '/';
+const nav = [
+  { href: '/', label: '首页', en: 'Home' },
+  { href: '/posts/', label: '文章', en: 'Journal' },
+  { href: '/tags/', label: '标签', en: 'Index' },
+  { href: '/about/', label: '关于', en: 'About' },
+];
+---
+
+<header class:list={['site-header', { 'is-home': isHome }]}>
+  <a class="wordmark" href="/" aria-label={`${SITE.title}首页`}>
+    <span class="wordmark-mark" aria-hidden="true">LB</span>
+    <span class="wordmark-name">{SITE.title}</span>
+  </a>
+
+  <button class="menu-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="site-menu">
+    <Menu class="menu-open-icon" size={23} stroke-width={1.35} />
+    <X class="menu-close-icon" size={24} stroke-width={1.35} />
+  </button>
+</header>
+
+<div class="site-menu" id="site-menu" aria-hidden="true" inert>
+  <div class="menu-intro">
+    <p>Personal journal<br />Shanghai / 2026</p>
+    <p>{SITE.description}</p>
+  </div>
+  <nav aria-label="主导航">
+    {nav.map((item, index) => (
+      <a href={item.href} aria-current={pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)) ? 'page' : undefined}>
+        <span>{String(index + 1).padStart(2, '0')}</span>
+        <strong>{item.label}</strong>
+        <small>{item.en}</small>
+      </a>
+    ))}
+  </nav>
+  <div class="menu-footer">
+    <a href="/rss.xml"><Rss size={16} /> RSS</a>
+    <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+    <button class="theme-toggle" type="button" aria-label="切换深浅主题" title="切换深浅主题">
+      <Sun class="sun-icon" size={18} stroke-width={1.5} />
+      <Moon class="moon-icon" size={18} stroke-width={1.5} />
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+  const menuButton = document.querySelector('.menu-toggle');
+  const menu = document.querySelector('.site-menu');
+  const setMenu = (open) => {
+    menuButton?.setAttribute('aria-expanded', String(open));
+    menu?.setAttribute('aria-hidden', String(!open));
+    if (menu) menu.inert = !open;
+    document.documentElement.classList.toggle('menu-open', open);
+    if (menuButton) menuButton.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+  };
+  menuButton?.addEventListener('click', () => setMenu(menuButton.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setMenu(false);
+  });
+
+  const themeToggle = document.querySelector('.theme-toggle');
+  themeToggle?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    localStorage.setItem('theme', next);
+  });
+</script>

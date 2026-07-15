@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+  return tags.map((tag) => ({ params: { tag }, props: { tag } }));
+}
+
+const { tag } = Astro.props;
+const posts = (await getCollection('posts', ({ data }) => !data.draft && data.tags.includes(tag)))
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+---
+
+<BaseLayout title={`标签：${tag}`} description={`与“${tag}”相关的文章。`}>
+  <header class="page-header shell">
+    <p class="eyebrow">Topic / {posts.length}</p>
+    <h1>{tag}</h1>
+    <p>这个主题下的全部记录。</p>
+  </header>
+  <section class="shell archive-list" aria-label={`${tag}文章列表`}>
+    {posts.map((post, index) => <ArticleCard post={post} index={index} />)}
+  </section>
+</BaseLayout>

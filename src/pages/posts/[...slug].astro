@@ -1,0 +1,59 @@
+---
+import { getCollection, render } from 'astro:content';
+import { ArrowLeft, ArrowUpRight } from '@lucide/astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate } from '../../site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const allPosts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+const currentIndex = allPosts.findIndex((item) => item.id === post.id);
+const nextPost = allPosts[currentIndex + 1] ?? allPosts[0];
+---
+
+<BaseLayout title={post.data.title} description={post.data.description} image={post.data.image} article>
+  <article class="post-page">
+    <header class="post-header shell">
+      <a class="back-link" href="/posts/"><ArrowLeft size={16} /> 全部文章</a>
+      <div class="post-heading-grid">
+        <div class="post-meta-rail">
+          <time datetime={post.data.published.toISOString()}>{formatDate(post.data.published)}</time>
+          <span>约 {Math.max(3, headings.length * 2)} 分钟阅读</span>
+        </div>
+        <div>
+          <div class="post-tags">
+            {post.data.tags.map((tag) => <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>)}
+          </div>
+          <h1>{post.data.title}</h1>
+          <p class="post-deck">{post.data.description}</p>
+        </div>
+      </div>
+      <img class="post-hero" src={post.data.image} alt={post.data.imageAlt} />
+    </header>
+
+    <div class="post-body shell">
+      <aside class="post-aside" aria-label="文章目录">
+        <p>本文目录</p>
+        {headings.filter((heading) => heading.depth === 2).map((heading) => (
+          <a href={`#${heading.slug}`}>{heading.text}</a>
+        ))}
+      </aside>
+      <div class="prose"><Content /></div>
+    </div>
+
+    <footer class="post-end shell">
+      <p class="eyebrow">Continue reading</p>
+      <a href={`/posts/${nextPost.id}/`}>
+        <span>下一篇</span>
+        <strong>{nextPost.data.title}</strong>
+        <ArrowUpRight size={24} />
+      </a>
+    </footer>
+  </article>
+</BaseLayout>

@@ -1,0 +1,23 @@
+{
+  "name": "personal-notes-blog",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "verify:ui": "node scripts/verify.mjs"
+  },
+  "dependencies": {
+    "@astrojs/rss": "latest",
+    "@lucide/astro": "latest",
+    "astro": "^7.0.9"
+  },
+  "devDependencies": {
+    "@astrojs/check": "latest",
+    "playwright-core": "^1.61.1",
+    "typescript": "latest"
+  }
+}

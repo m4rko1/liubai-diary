@@ -1,0 +1,13 @@
+---
+import { ArrowLeft } from '@lucide/astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="页面未找到">
+  <section class="not-found shell">
+    <p class="eyebrow">Error / 404</p>
+    <h1>这一页<br />暂时留白。</h1>
+    <p>可能是链接已经改变，或者这篇内容还没有写下。</p>
+    <a href="/"><ArrowLeft size={17} /> 返回首页</a>
+  </section>
+</BaseLayout>

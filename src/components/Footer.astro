@@ -1,0 +1,19 @@
+---
+import { ArrowUpRight } from '@lucide/astro';
+import { SITE } from '../site';
+---
+
+<footer class="site-footer">
+  <div class="footer-brand">
+    <span>LB</span>
+    <p>{SITE.title}</p>
+  </div>
+  <p class="footer-statement">把注意力留给<br />真正值得记住的事。</p>
+  <div class="footer-meta">
+    <div>
+      <a href={`mailto:${SITE.email}`}>邮件 <ArrowUpRight size={14} /></a>
+      <a href="/rss.xml">RSS <ArrowUpRight size={14} /></a>
+    </div>
+    <p>© {new Date().getFullYear()} {SITE.author}<br />CC BY-NC 4.0</p>
+  </div>
+</footer>

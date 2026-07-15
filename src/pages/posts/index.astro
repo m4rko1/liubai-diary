@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+---
+
+<BaseLayout title="全部文章" description="留白日记的全部文章。">
+  <header class="page-header shell">
+    <p class="eyebrow">Archive / {posts.length}</p>
+    <h1>全部文章</h1>
+    <p>按时间排列的思考、观察与实践记录。</p>
+  </header>
+  <section class="shell archive-list" aria-label="文章列表">
+    {posts.map((post, index) => <ArticleCard post={post} index={index} />)}
+  </section>
+</BaseLayout>
